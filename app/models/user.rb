@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110118213502
+# Schema version: 20110119000533
 #
 # Table name: users
 #
@@ -10,6 +10,7 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  remember_token     :string(255)
 #
 
 
@@ -41,6 +42,11 @@ attr_accessor :password
     user = find_by_email(email)
     return nil  if user.nil?
     return user if user.has_password?(submitted_password)
+  end
+
+    def remember_me!
+    self.remember_token = encrypt("#{salt}--#{id}--#{Time.now.utc}")
+    save_without_validation
   end
 
   private
