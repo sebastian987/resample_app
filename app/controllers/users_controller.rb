@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only => [:edit, :update]
+  
+  before_filter :authenticate, :except => [:show, :new, :create]
   def show
    @user = User.find(params[:id])
     @microposts = @user.microposts(:page => params[:page])
@@ -48,6 +49,21 @@ def destroy
     User.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_path
+  end
+
+
+def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers
+    render 'show_follow'
   end
 
 private

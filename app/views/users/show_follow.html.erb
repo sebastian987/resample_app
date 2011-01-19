@@ -1,22 +1,25 @@
-<table class="profile">
+<table>
   <tr>
     <td class="main">
-      <h2>
-        <%= render 'follow_form' if signed_in? %>
-        <%= h @user.name %>
-      </h2>
-     <% unless @user.microposts.empty? %>
-        <table class="microposts">
-          <%= render @microposts %>
-        </table>
+      <h2><%= @title %></h2>
 
+      <% unless @users.empty? %>
+        <ul class="users">
+          <%= render @users %>
+        </ul>
+       
       <% end %>
     </td>
     <td class="sidebar round">
       <strong>Name</strong> <%= h @user.name %><br />
       <strong>URL</strong> <%= link_to user_path(@user), @user %><br />
       <strong>Microposts</strong> <%= @user.microposts.count %>
-       <%= render 'pages/stats' %>
+      <%= render 'pages/stats' %>
+      <% unless @users.empty? %>
+        <% @users.each do |user| %>
+       
+        <% end %>
+      <% end %>
     </td>
   </tr>
 </table>
