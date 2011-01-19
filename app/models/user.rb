@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110119000533
+# Schema version: 20110119022206
 #
 # Table name: users
 #
@@ -11,13 +11,15 @@
 #  encrypted_password :string(255)
 #  salt               :string(255)
 #  remember_token     :string(255)
+#  admin              :boolean
 #
 
 
 require 'digest'
 class User < ActiveRecord::Base
  attr_accessible :name, :email, :password, :password_confirmation
-attr_accessor :password
+ attr_accessor :password
+ has_many :microposts, :dependent => :destroy
   EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   validates_presence_of :name, :email
@@ -49,6 +51,10 @@ attr_accessor :password
     save_without_validation
   end
 
+
+     def feed
+      Micropost.all(:conditions => ["user_id = ?", id])
+    end
   private
 
     def encrypt_password
@@ -67,6 +73,8 @@ attr_accessor :password
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
     end
+
     
+   
 
 end
